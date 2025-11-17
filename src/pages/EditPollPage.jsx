@@ -435,7 +435,7 @@ const EditPollPage = () => {
                       }) : 'Select expiry date'}
                     </Button>
                     {showCalendar && (
-                      <div className="absolute z-10 mt-2 bg-white border-2 rounded-xl shadow-2xl">
+                      <div className="absolute z-50 mt-2 bg-white border-2 rounded-xl shadow-2xl">
                         <Calendar
                           mode="single"
                           selected={selectedDate}
