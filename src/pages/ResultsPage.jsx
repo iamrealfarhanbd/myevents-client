@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import axios from 'axios';
@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Copy, Download, ArrowLeft } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Copy, Download, ArrowLeft, Printer, FileDown } from 'lucide-react';
 import config from '@/config/config';
 
 const ResultsPage = () => {
@@ -17,6 +18,7 @@ const ResultsPage = () => {
   const [loading, setLoading] = useState(true);
   const { token } = useAuth();
   const navigate = useNavigate();
+  const qrCodeRef = useRef(null);
 
   const API_URL = config.apiUrl;
   const PUBLIC_URL = config.publicUrl;
@@ -45,6 +47,168 @@ const ResultsPage = () => {
     const link = `${PUBLIC_URL}/poll/${pollId}`;
     navigator.clipboard.writeText(link);
     toast.success('Link copied to clipboard!');
+  };
+
+  const downloadQRCode = () => {
+    const svg = qrCodeRef.current.querySelector('svg');
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    
+    canvas.width = 400;
+    canvas.height = 400;
+    
+    img.onload = () => {
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, 400, 400);
+      
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `poll-qr-code-${pollId}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        toast.success('QR Code downloaded!');
+      });
+    };
+    
+    img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+  };
+
+  const downloadQRAsPDF = () => {
+    const publicLink = `${PUBLIC_URL}/poll/${pollId}`;
+    
+    // Create a printable window
+    const printWindow = window.open('', '_blank');
+    const svg = qrCodeRef.current.querySelector('svg');
+    const svgData = new XMLSerializer().serializeToString(svg);
+    
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Poll QR Code - ${data.poll.title}</title>
+          <style>
+            @media print {
+              @page { 
+                size: A4; 
+                margin: 20mm; 
+              }
+              body {
+                margin: 0;
+                padding: 0;
+              }
+            }
+            body {
+              font-family: Arial, sans-serif;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              min-height: 100vh;
+              padding: 40px;
+              text-align: center;
+            }
+            .container {
+              max-width: 600px;
+              border: 2px solid #3b82f6;
+              border-radius: 16px;
+              padding: 40px;
+              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+              color: #1e40af;
+              margin-bottom: 10px;
+              font-size: 32px;
+            }
+            .description {
+              color: #64748b;
+              margin-bottom: 30px;
+              font-size: 16px;
+            }
+            .qr-container {
+              background: white;
+              padding: 20px;
+              border-radius: 12px;
+              display: inline-block;
+              margin: 20px 0;
+            }
+            .qr-code {
+              width: 300px;
+              height: 300px;
+            }
+            .link {
+              color: #3b82f6;
+              word-break: break-all;
+              font-size: 14px;
+              margin-top: 20px;
+              padding: 15px;
+              background: #eff6ff;
+              border-radius: 8px;
+              font-family: monospace;
+            }
+            .instructions {
+              margin-top: 30px;
+              color: #475569;
+              font-size: 14px;
+              line-height: 1.6;
+            }
+            .footer {
+              margin-top: 40px;
+              padding-top: 20px;
+              border-top: 2px solid #e2e8f0;
+              color: #94a3b8;
+              font-size: 12px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>📋 ${data.poll.title}</h1>
+            ${data.poll.description ? `<p class="description">${data.poll.description}</p>` : ''}
+            
+            <div class="qr-container">
+              <div class="qr-code">
+                ${svgData}
+              </div>
+            </div>
+            
+            <div class="link">
+              ${publicLink}
+            </div>
+            
+            <div class="instructions">
+              <strong>How to use:</strong><br>
+              1. Scan this QR code with your mobile device<br>
+              2. Or visit the link above in your browser<br>
+              3. Fill out the survey and submit your response
+            </div>
+            
+            <div class="footer">
+              Poll expires: ${new Date(data.poll.expireAt).toLocaleString()}<br>
+              Generated by MyEvents - Temporary Poll Platform
+            </div>
+          </div>
+        </body>
+      </html>
+    `);
+    
+    printWindow.document.close();
+    
+    // Wait for content to load then trigger print
+    setTimeout(() => {
+      printWindow.print();
+      toast.success('Print dialog opened!');
+    }, 250);
+  };
+
+  const printQRCode = () => {
+    downloadQRAsPDF();
   };
 
   const downloadCSV = () => {
@@ -148,12 +312,38 @@ const ResultsPage = () => {
                   readOnly
                   className="flex-1 text-sm"
                 />
-                <Button size="icon" variant="outline" onClick={copyLink}>
+                <Button size="icon" variant="outline" onClick={copyLink} title="Copy link">
                   <Copy className="h-4 w-4" />
                 </Button>
               </div>
-              <div className="flex justify-center">
-                <QRCodeSVG value={publicLink} size={150} />
+              
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gradient-to-br from-blue-50 to-purple-50">
+                <div ref={qrCodeRef} className="flex justify-center mb-3">
+                  <div className="bg-white p-4 rounded-lg shadow-sm">
+                    <QRCodeSVG value={publicLink} size={180} />
+                  </div>
+                </div>
+                
+                <div className="flex gap-2 justify-center">
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    onClick={printQRCode}
+                    className="flex items-center gap-2"
+                  >
+                    <Printer className="h-4 w-4" />
+                    Print
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    onClick={downloadQRCode}
+                    className="flex items-center gap-2"
+                  >
+                    <FileDown className="h-4 w-4" />
+                    Download PNG
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
