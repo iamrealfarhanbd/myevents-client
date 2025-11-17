@@ -151,9 +151,9 @@ const CreatePollPage = () => {
           <p className="text-xl text-gray-600">Build your temporary poll with custom questions and auto-delete schedule</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6 overflow-visible">
           {/* Basic Info Card */}
-          <Card className="border-0 shadow-xl bg-white/90 backdrop-blur">
+          <Card className="border-0 shadow-xl bg-white/90 backdrop-blur overflow-visible">
             <CardHeader className="border-b bg-gradient-to-r from-blue-50 to-purple-50">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg">
@@ -198,7 +198,7 @@ const CreatePollPage = () => {
           </Card>
 
           {/* Questions Card */}
-          <Card className="border-0 shadow-xl bg-white/90 backdrop-blur">
+          <Card className="border-0 shadow-xl bg-white/90 backdrop-blur overflow-visible">
             <CardHeader className="border-b bg-gradient-to-r from-purple-50 to-pink-50">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -359,7 +359,7 @@ const CreatePollPage = () => {
                     <CalendarIcon className="h-4 w-4" />
                     Expiry Date *
                   </Label>
-                  <div className="relative">
+                  <div className="relative z-50">
                     <Button
                       type="button"
                       variant="outline"
@@ -375,7 +375,7 @@ const CreatePollPage = () => {
                       }) : 'Select expiry date'}
                     </Button>
                     {showCalendar && (
-                      <div className="absolute z-50 mt-2 bg-white border-2 rounded-xl shadow-2xl">
+                      <div className="absolute z-[9999] mt-2 bg-white border-2 rounded-xl shadow-2xl">
                         <Calendar
                           mode="single"
                           selected={selectedDate}
