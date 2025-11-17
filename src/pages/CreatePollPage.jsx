@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
-import { X, Plus, FileText, CalendarIcon, Clock, Sparkles, ListChecks, Type, MousePointerClick, ChevronDown } from 'lucide-react';
+import { X, Plus, FileText, CalendarIcon, Clock, Sparkles, ListChecks, Type, MousePointerClick, ChevronDown, ToggleLeft, ToggleRight, CheckSquare } from 'lucide-react';
 import config from '@/config/config';
 
 const CreatePollPage = () => {
@@ -19,6 +19,8 @@ const CreatePollPage = () => {
   const [selectedTime, setSelectedTime] = useState('');
   const [showCalendar, setShowCalendar] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [consentEnabled, setConsentEnabled] = useState(false);
+  const [consentText, setConsentText] = useState('I agree to receive event updates and notifications.');
   const { token } = useAuth();
   const navigate = useNavigate();
 
@@ -108,7 +110,9 @@ const CreatePollPage = () => {
           title,
           description,
           questions,
-          expireAt: expireAt.toISOString()
+          expireAt: expireAt.toISOString(),
+          consentEnabled,
+          consentText: consentEnabled ? consentText : null
         },
         {
           headers: {
@@ -266,7 +270,7 @@ const CreatePollPage = () => {
                             key={typeOption.value}
                             type="button"
                             onClick={() => updateQuestion(question.id, 'type', typeOption.value)}
-                            className={`p-4 rounded-lg border-2 text-left transition-all duration-200 ${
+                            className={`p-4 rounded-lg border-2 text-left transition-all duration-200 cursor-pointer ${
                               isSelected
                                 ? 'border-purple-500 bg-purple-50 shadow-md'
                                 : 'border-gray-200 hover:border-purple-300 hover:bg-gray-50'
@@ -407,6 +411,72 @@ const CreatePollPage = () => {
                 </p>
               </div>
             </CardContent>
+          </Card>
+
+          {/* Consent Feature Card */}
+          <Card className="border-0 shadow-xl bg-white/90 backdrop-blur">
+            <CardHeader className="border-b bg-gradient-to-r from-green-50 to-cyan-50">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-gradient-to-br from-green-600 to-cyan-600 rounded-lg">
+                    <CheckSquare className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-2xl">Consent Agreement</CardTitle>
+                    <CardDescription className="text-base">Add optional consent checkbox for participants</CardDescription>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setConsentEnabled(!consentEnabled)}
+                  className="relative inline-flex items-center cursor-pointer"
+                >
+                  <div className={`w-14 h-7 rounded-full transition-colors duration-200 ${
+                    consentEnabled ? 'bg-gradient-to-r from-green-500 to-cyan-500' : 'bg-gray-300'
+                  }`}>
+                    <div className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-200 ${
+                      consentEnabled ? 'translate-x-7' : 'translate-x-0'
+                    }`}></div>
+                  </div>
+                  <span className="ml-3 text-sm font-medium text-gray-700">
+                    {consentEnabled ? 'Enabled' : 'Disabled'}
+                  </span>
+                </button>
+              </div>
+            </CardHeader>
+            {consentEnabled && (
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  <div className="space-y-3">
+                    <Label htmlFor="consentText" className="text-base font-semibold">
+                      Consent Text *
+                    </Label>
+                    <textarea
+                      id="consentText"
+                      className="flex w-full rounded-md border-2 border-input bg-background px-4 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-green-500 disabled:cursor-not-allowed disabled:opacity-50 min-h-[100px] transition-colors"
+                      placeholder="Enter the consent message that participants must agree to..."
+                      value={consentText}
+                      onChange={(e) => setConsentText(e.target.value)}
+                    />
+                    <p className="text-sm text-gray-500">
+                      This text will appear as a required checkbox above the submit button on the poll form.
+                    </p>
+                  </div>
+                  <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <p className="text-sm font-semibold text-green-900 mb-2">Preview:</p>
+                    <div className="flex items-start gap-3 p-3 bg-white rounded border border-green-200">
+                      <input 
+                        type="checkbox" 
+                        checked 
+                        readOnly
+                        className="mt-1 h-4 w-4 text-green-600 rounded border-gray-300 cursor-pointer"
+                      />
+                      <span className="text-sm text-gray-700">{consentText}</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            )}
           </Card>
 
           {/* Action Buttons */}

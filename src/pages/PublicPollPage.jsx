@@ -18,6 +18,7 @@ const PublicPollPage = () => {
   const [participantEmail, setParticipantEmail] = useState('');
   const [participantPhone, setParticipantPhone] = useState('');
   const [answers, setAnswers] = useState({});
+  const [consentAgreed, setConsentAgreed] = useState(false);
 
   const API_URL = config.apiUrl;
 
@@ -45,6 +46,13 @@ const PublicPollPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if consent is required and agreed
+    if (poll.consentEnabled && !consentAgreed) {
+      toast.error('Please agree to the consent terms to submit.');
+      return;
+    }
+
     setSubmitting(true);
 
     try {
@@ -58,13 +66,14 @@ const PublicPollPage = () => {
         participantName,
         participantEmail,
         participantPhone,
-        answers: answersArray
+        answers: answersArray,
+        consentAgreed: poll.consentEnabled ? consentAgreed : false
       });
 
       toast.success('Thank you for your submission!');
       setSubmitted(true);
     } catch (error) {
-      toast.error('Failed to submit poll. Please try again.');
+      toast.error(error.response?.data?.message || 'Failed to submit poll. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -269,8 +278,28 @@ const PublicPollPage = () => {
                 ))}
               </div>
 
+              {/* Consent Checkbox */}
+              {poll.consentEnabled && (
+                <div className="pt-6 pb-4">
+                  <div className="p-4 bg-gradient-to-r from-green-50 to-cyan-50 border-2 border-green-300 rounded-xl">
+                    <label className="flex items-start gap-3 cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={consentAgreed}
+                        onChange={(e) => setConsentAgreed(e.target.checked)}
+                        required
+                        className="mt-1 h-5 w-5 text-green-600 rounded border-gray-300 focus:ring-green-500 focus:ring-2 cursor-pointer transition-all"
+                      />
+                      <span className="text-sm text-gray-800 leading-relaxed group-hover:text-gray-900 transition-colors">
+                        {poll.consentText}
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              )}
+
               {/* Submit Button */}
-              <div className="pt-6">
+              <div className="pt-2">
                 <Button 
                   type="submit" 
                   className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105" 
