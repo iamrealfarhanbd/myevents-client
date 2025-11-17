@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { UserPlus, Mail, Lock, User, Sparkles, ArrowRight, Shield } from 'lucide-react';
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
@@ -28,62 +29,136 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
-          <CardDescription>
-            Enter your information to create your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder="John Doe"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+      <div className="w-full max-w-md">
+        {/* Logo/Brand */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 mb-4">
+            <div className="p-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-lg">
+              <Sparkles className="h-8 w-8 text-white" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-              />
-            </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Creating account...' : 'Register'}
-            </Button>
-          </form>
-          <div className="mt-4 text-center text-sm">
-            Already have an account?{' '}
-            <Link to="/login" className="text-blue-600 hover:underline">
-              Login
-            </Link>
           </div>
-        </CardContent>
-      </Card>
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-2">
+            Join <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">MyEvents</span>
+          </h1>
+          <p className="text-gray-600">Create your free account and start polling</p>
+        </div>
+
+        <Card className="border-0 shadow-2xl bg-white/90 backdrop-blur">
+          <CardHeader className="border-b bg-gradient-to-r from-blue-50 to-purple-50 pb-8">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg">
+                <UserPlus className="h-5 w-5 text-white" />
+              </div>
+              <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
+            </div>
+            <CardDescription className="text-base">
+              Fill in your details to get started for free
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="pt-8">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-3">
+                <Label htmlFor="name" className="text-base font-semibold flex items-center gap-2">
+                  <User className="h-4 w-4 text-gray-500" />
+                  Full Name
+                </Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="John Doe"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  className="text-base py-6 border-2 focus:border-purple-500"
+                />
+              </div>
+              <div className="space-y-3">
+                <Label htmlFor="email" className="text-base font-semibold flex items-center gap-2">
+                  <Mail className="h-4 w-4 text-gray-500" />
+                  Email Address
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="text-base py-6 border-2 focus:border-purple-500"
+                />
+              </div>
+              <div className="space-y-3">
+                <Label htmlFor="password" className="text-base font-semibold flex items-center gap-2">
+                  <Lock className="h-4 w-4 text-gray-500" />
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  className="text-base py-6 border-2 focus:border-purple-500"
+                />
+                <p className="text-sm text-gray-500 flex items-center gap-1">
+                  <Shield className="h-3 w-3" />
+                  Minimum 6 characters
+                </p>
+              </div>
+              <Button 
+                type="submit" 
+                className="w-full text-lg py-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg transform hover:scale-105 transition-all duration-200" 
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
+                    Creating account...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-5 w-5" />
+                    Create Account
+                  </>
+                )}
+              </Button>
+            </form>
+            <div className="mt-6 text-center">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-white text-gray-500">Already have an account?</span>
+                </div>
+              </div>
+              <Link 
+                to="/login" 
+                className="mt-4 inline-flex items-center gap-2 text-base font-semibold text-purple-600 hover:text-purple-700 transition-colors"
+              >
+                Sign in here
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Features */}
+        <div className="mt-6 grid grid-cols-3 gap-4 text-center">
+          <div className="text-xs text-gray-600">
+            <div className="font-semibold">✨ Free Forever</div>
+          </div>
+          <div className="text-xs text-gray-600">
+            <div className="font-semibold">🔒 Secure</div>
+          </div>
+          <div className="text-xs text-gray-600">
+            <div className="font-semibold">⚡ Instant Setup</div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

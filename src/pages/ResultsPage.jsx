@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
-import { Copy, Download, ArrowLeft, Printer, FileDown } from 'lucide-react';
+import { Copy, Download, ArrowLeft, Printer, FileDown, Sparkles, BarChart3, Users, Clock, Calendar, Share2, QrCode, ExternalLink } from 'lucide-react';
 import config from '@/config/config';
 
 const ResultsPage = () => {
@@ -260,20 +260,31 @@ const ResultsPage = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="text-lg">Loading results...</div>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <Card className="border-0 shadow-xl p-8">
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-purple-600 border-t-transparent mb-4"></div>
+            <p className="text-gray-600 text-lg">Loading results...</p>
+          </div>
+        </Card>
       </div>
     );
   }
 
   if (!data) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <Card>
-          <CardHeader>
-            <CardTitle>Results Not Found</CardTitle>
-            <CardDescription>This poll does not exist or has expired.</CardDescription>
-          </CardHeader>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <Card className="border-0 shadow-xl max-w-md">
+          <CardContent className="pt-16 pb-16 text-center">
+            <div className="inline-flex p-6 bg-red-100 rounded-3xl mb-6">
+              <BarChart3 className="h-16 w-16 text-red-600" />
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">Results Not Found</h2>
+            <p className="text-gray-600 mb-6">This poll does not exist or has expired.</p>
+            <Button onClick={() => navigate('/dashboard')} className="bg-gradient-to-r from-blue-600 to-purple-600">
+              Go to Dashboard
+            </Button>
+          </CardContent>
         </Card>
       </div>
     );
@@ -282,42 +293,77 @@ const ResultsPage = () => {
   const publicLink = `${PUBLIC_URL}/poll/${pollId}`;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="mb-8">
-          <Button variant="ghost" onClick={() => navigate('/dashboard')} className="mb-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <div className="container mx-auto px-4 py-12 max-w-7xl">
+        {/* Header */}
+        <div className="mb-10">
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate('/dashboard')} 
+            className="mb-6 hover:bg-blue-50"
+          >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Dashboard
           </Button>
-          <h1 className="text-4xl font-bold">{data.poll.title}</h1>
-          {data.poll.description && (
-            <p className="text-gray-700 mt-3 text-lg">{data.poll.description}</p>
-          )}
-          <p className="text-gray-600 mt-2">
-            Created: {new Date(data.poll.createdAt).toLocaleString()} | 
-            Expires: {new Date(data.poll.expireAt).toLocaleString()}
-          </p>
+          
+          <div className="bg-white/90 backdrop-blur rounded-2xl shadow-xl p-8 border-0">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full mb-4">
+              <BarChart3 className="h-5 w-5 text-purple-600" />
+              <span className="text-sm font-semibold text-purple-900">Poll Results</span>
+            </div>
+            
+            <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
+              {data.poll.title}
+            </h1>
+            {data.poll.description && (
+              <p className="text-gray-700 text-xl mb-6 leading-relaxed">{data.poll.description}</p>
+            )}
+            <div className="flex flex-wrap gap-6 text-gray-600">
+              <div className="flex items-center gap-2">
+                <Calendar className="h-5 w-5 text-blue-600" />
+                <span>Created: {new Date(data.poll.createdAt).toLocaleString()}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="h-5 w-5 text-orange-600" />
+                <span>Expires: {new Date(data.poll.expireAt).toLocaleString()}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Users className="h-5 w-5 text-green-600" />
+                <span className="font-semibold">{data.submissions.length} Responses</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>Share Poll</CardTitle>
-              <CardDescription>Share this link with participants</CardDescription>
+          <Card className="border-0 shadow-xl bg-white/90 backdrop-blur lg:col-span-1">
+            <CardHeader className="border-b bg-gradient-to-r from-blue-50 to-purple-50">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg">
+                  <Share2 className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl">Share Poll</CardTitle>
+                  <CardDescription>Send to participants</CardDescription>
+                </div>
+              </div>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Input
-                  value={publicLink}
-                  readOnly
-                  className="flex-1 text-sm"
-                />
-                <Button size="icon" variant="outline" onClick={copyLink} title="Copy link">
-                  <Copy className="h-4 w-4" />
-                </Button>
+            <CardContent className="pt-6 space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Public Link</label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    value={publicLink}
+                    readOnly
+                    className="flex-1 text-sm border-2"
+                  />
+                  <Button size="icon" variant="outline" onClick={copyLink} title="Copy link" className="border-2 hover:bg-blue-50">
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
               
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gradient-to-br from-blue-50 to-purple-50">
+              <div className="border-2 border-purple-300 rounded-xl p-6 bg-gradient-to-br from-blue-50 to-purple-50">
                 <div ref={qrCodeRef} className="flex justify-center mb-3">
                   <div className="bg-white p-4 rounded-lg shadow-sm">
                     <QRCodeSVG value={publicLink} size={180} />
