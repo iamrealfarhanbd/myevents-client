@@ -281,18 +281,34 @@ const PublicPollPage = () => {
               {/* Consent Checkbox */}
               {poll.consentEnabled && (
                 <div className="pt-6 pb-4">
-                  <div className="p-4 bg-gradient-to-r from-green-50 to-cyan-50 border-2 border-green-300 rounded-xl">
-                    <label className="flex items-start gap-3 cursor-pointer group">
+                  <div className="p-5 bg-gradient-to-r from-green-50 via-cyan-50 to-green-50 border-2 border-green-400 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="p-1.5 bg-gradient-to-br from-green-600 to-cyan-600 rounded-lg">
+                        <svg className="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <span className="text-xs font-bold text-green-700 uppercase tracking-wide">Agreement Required</span>
+                    </div>
+                    <label className="flex items-start gap-4 cursor-pointer group">
                       <input
                         type="checkbox"
                         checked={consentAgreed}
                         onChange={(e) => setConsentAgreed(e.target.checked)}
                         required
-                        className="mt-1 h-5 w-5 text-green-600 rounded border-gray-300 focus:ring-green-500 focus:ring-2 cursor-pointer transition-all"
+                        className="mt-1 h-5 w-5 text-green-600 rounded border-2 border-green-400 focus:ring-green-500 focus:ring-2 cursor-pointer transition-all hover:scale-110"
                       />
-                      <span className="text-sm text-gray-800 leading-relaxed group-hover:text-gray-900 transition-colors">
-                        {poll.consentText}
-                      </span>
+                      <div className="flex-1">
+                        <span className="text-base text-gray-800 leading-relaxed group-hover:text-gray-900 transition-colors font-medium">
+                          {poll.consentText}
+                        </span>
+                        <p className="text-xs text-green-700 mt-1.5 flex items-center gap-1">
+                          <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          You must check this box to proceed
+                        </p>
+                      </div>
                     </label>
                   </div>
                 </div>
