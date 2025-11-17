@@ -451,7 +451,7 @@ const ResultsPage = () => {
 };
 
 // Simple Input component for the share link
-const Input = ({ className, ...props }) => {
+const ShareLinkInput = ({ className, ...props }) => {
   return (
     <ShareLinkInput
       className={`flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ${className}`}
