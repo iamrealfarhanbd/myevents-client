@@ -13,3 +13,17 @@ body {
 #root {
   min-height: 100vh;
 }
+
+/* Fix cursor pointers for interactive elements */
+button, 
+a, 
+[role="button"], 
+input[type="button"],
+input[type="submit"],
+input[type="checkbox"],
+input[type="radio"],
+select,
+label[for],
+.cursor-pointer {
+  cursor: pointer !important;
+}
