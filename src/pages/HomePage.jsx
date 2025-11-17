@@ -230,7 +230,6 @@ const HomePage = () => {
         {/* CTA Section */}
         <div className="mt-20 text-center">
           <Card className="border-0 shadow-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white overflow-hidden">
-            <div className="absolute inset-0 bg-black/10" />
             <CardContent className="py-16 relative">
               <h2 className="text-4xl font-bold mb-4">Ready to Create Your First Poll?</h2>
               <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
