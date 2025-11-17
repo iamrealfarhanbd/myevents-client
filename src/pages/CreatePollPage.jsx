@@ -339,8 +339,8 @@ const CreatePollPage = () => {
             </CardContent>
           </Card>
 
-          {/* Expiry Settings Card */}
-          <Card className="border-0 shadow-xl bg-white/90 backdrop-blur">
+          {/* Expiry Schedule Card */}
+          <Card className="border-0 shadow-xl bg-white/90 backdrop-blur overflow-visible">
             <CardHeader className="border-b bg-gradient-to-r from-orange-50 to-red-50">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-gradient-to-br from-orange-600 to-red-600 rounded-lg">
@@ -352,7 +352,7 @@ const CreatePollPage = () => {
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="pt-6">
+            <CardContent className="pt-6 pb-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-3">
                   <Label className="text-base font-semibold flex items-center gap-2">
@@ -414,7 +414,7 @@ const CreatePollPage = () => {
           </Card>
 
           {/* Consent Feature Card */}
-          <Card className="border-0 shadow-xl bg-white/90 backdrop-blur">
+          <Card className="border-0 shadow-xl bg-white/90 backdrop-blur mt-8">
             <CardHeader className="border-b bg-gradient-to-r from-green-50 to-cyan-50">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
