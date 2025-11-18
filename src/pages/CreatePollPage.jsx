@@ -198,7 +198,7 @@ const CreatePollPage = () => {
           </Card>
 
           {/* Questions Card */}
-          <Card className="border-0 shadow-xl bg-white/90 backdrop-blur overflow-visible">
+          <Card className="border-0 shadow-xl bg-white/90 backdrop-blur overflow-visible relative z-0">
             <CardHeader className="border-b bg-gradient-to-r from-purple-50 to-pink-50">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -414,7 +414,7 @@ const CreatePollPage = () => {
           </Card>
 
           {/* Consent Feature Card */}
-          <Card className="border-0 shadow-xl bg-white/90 backdrop-blur mt-8">
+          <Card className="border-0 shadow-xl bg-white/90 backdrop-blur mt-8 relative z-0">
             <CardHeader className="border-b bg-gradient-to-r from-green-50 to-cyan-50">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
