@@ -11,14 +11,14 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
-        caption: "flex justify-center pt-1 relative items-center",
-        caption_label: "text-sm font-medium",
-        nav: "space-x-1 flex items-center",
+        caption: "flex pt-1 relative items-center justify-center pb-2 mb-2",
+        caption_label: "text-base font-semibold text-purple-700 flex justify-center w-full text-center",
+        nav: "hidden",
         nav_button: cn(
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+          "h-8 w-8 bg-transparent hover:bg-purple-100 p-0 transition-colors absolute top-1/2 -translate-y-1/2"
         ),
-        nav_button_previous: "absolute left-1",
-        nav_button_next: "absolute right-1",
+        nav_button_previous: "-left-12",
+        nav_button_next: "-right-12",
         table: "w-full border-collapse space-y-1",
         head_row: "flex",
         head_cell:
