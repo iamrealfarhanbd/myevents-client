@@ -138,17 +138,17 @@ const CreatePollPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <div className="container mx-auto px-4 py-12 max-w-5xl">
+      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-12 max-w-5xl">
         {/* Header */}
-        <div className="mb-10 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full mb-4">
-            <Sparkles className="h-5 w-5 text-purple-600" />
-            <span className="text-sm font-semibold text-purple-900">Poll Creation</span>
+        <div className="mb-6 sm:mb-10 text-center">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full mb-3 sm:mb-4">
+            <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
+            <span className="text-xs sm:text-sm font-semibold text-purple-900">Poll Creation</span>
           </div>
-          <h1 className="text-5xl font-extrabold text-gray-900 mb-3">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-2 sm:mb-3 px-2">
             Create New <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Poll</span>
           </h1>
-          <p className="text-xl text-gray-600">Build your temporary poll with custom questions and auto-delete schedule</p>
+          <p className="text-base sm:text-lg lg:text-xl text-gray-600 px-4">Build your temporary poll with custom questions and auto-delete schedule</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6 overflow-visible">
@@ -353,9 +353,9 @@ const CreatePollPage = () => {
               </div>
             </CardHeader>
             <CardContent className="pt-6 pb-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <Label className="text-base font-semibold flex items-center gap-2">
+                  <Label className="text-sm sm:text-base font-semibold flex items-center gap-2">
                     <CalendarIcon className="h-4 w-4" />
                     Expiry Date *
                   </Label>
@@ -375,7 +375,7 @@ const CreatePollPage = () => {
                       }) : 'Select expiry date'}
                     </Button>
                     {showCalendar && (
-                      <div className="absolute z-[9999] mt-2 bg-white border-2 rounded-xl shadow-2xl">
+                      <div className="fixed sm:absolute z-[9999] mt-2 left-4 right-4 sm:left-auto sm:right-auto bg-white border-2 rounded-xl shadow-2xl max-w-sm mx-auto sm:max-w-none">
                         <Calendar
                           mode="single"
                           selected={selectedDate}
@@ -391,7 +391,7 @@ const CreatePollPage = () => {
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <Label htmlFor="time" className="text-base font-semibold flex items-center gap-2">
+                  <Label htmlFor="time" className="text-sm sm:text-base font-semibold flex items-center gap-2">
                     <Clock className="h-4 w-4" />
                     Expiry Time *
                   </Label>

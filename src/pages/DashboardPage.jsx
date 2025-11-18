@@ -67,16 +67,16 @@ const DashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <div className="container mx-auto px-4 py-12 max-w-7xl">
+      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-12 max-w-7xl">
         {/* Header */}
-        <div className="mb-10">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+        <div className="mb-6 sm:mb-10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
             <div>
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full mb-4">
-                <Sparkles className="h-5 w-5 text-purple-600" />
-                <span className="text-sm font-semibold text-purple-900">Dashboard</span>
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full mb-3 sm:mb-4">
+                <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
+                <span className="text-xs sm:text-sm font-semibold text-purple-900">Dashboard</span>
               </div>
-              <h1 className="text-5xl font-extrabold text-gray-900 mb-3">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-2 sm:mb-3">
                 My <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Polls</span>
               </h1>
               <p className="text-xl text-gray-600">Create and manage your temporary polls</p>
@@ -182,45 +182,48 @@ const DashboardPage = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="bg-gray-50">
-                      <TableHead className="font-bold text-gray-900">Title</TableHead>
-                      <TableHead className="font-bold text-gray-900">
-                        <div className="flex items-center gap-2">
-                          <Calendar className="h-4 w-4" />
-                          Created
-                        </div>
-                      </TableHead>
-                      <TableHead className="font-bold text-gray-900">
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4" />
-                          Expires
-                        </div>
-                      </TableHead>
-                      <TableHead className="font-bold text-gray-900">Status</TableHead>
-                      <TableHead className="font-bold text-gray-900 text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
+              <div className="overflow-x-auto -mx-6 sm:mx-0">
+                <div className="inline-block min-w-full align-middle">
+                  <div className="overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-gray-50">
+                          <TableHead className="font-bold text-gray-900 text-xs sm:text-sm">Title</TableHead>
+                          <TableHead className="font-bold text-gray-900 hidden lg:table-cell text-xs sm:text-sm">
+                            <div className="flex items-center gap-2">
+                              <Calendar className="h-4 w-4" />
+                              Created
+                            </div>
+                          </TableHead>
+                          <TableHead className="font-bold text-gray-900 text-xs sm:text-sm">
+                            <div className="flex items-center gap-2">
+                              <Clock className="h-4 w-4" />
+                              <span className="hidden sm:inline">Expires</span>
+                            </div>
+                          </TableHead>
+                          <TableHead className="font-bold text-gray-900 hidden sm:table-cell text-xs sm:text-sm">Status</TableHead>
+                          <TableHead className="font-bold text-gray-900 text-right text-xs sm:text-sm">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
                   <TableBody>
                     {polls.map((poll) => (
                       <TableRow key={poll._id} className="hover:bg-blue-50/50 transition-colors">
-                        <TableCell className="font-semibold text-gray-900 max-w-xs">
+                        <TableCell className="font-semibold text-gray-900 max-w-[150px] sm:max-w-xs text-xs sm:text-sm">
                           <div className="truncate">{poll.title}</div>
                           {poll.description && (
-                            <div className="text-sm text-gray-500 truncate">{poll.description}</div>
+                            <div className="text-xs text-gray-500 truncate hidden sm:block">{poll.description}</div>
                           )}
                         </TableCell>
-                        <TableCell className="text-gray-600">
+                        <TableCell className="text-gray-600 hidden lg:table-cell text-xs sm:text-sm">
                           {formatDate(poll.createdAt)}
                         </TableCell>
-                        <TableCell className="text-gray-600">
-                          {formatDate(poll.expireAt)}
+                        <TableCell className="text-gray-600 text-xs sm:text-sm">
+                          <span className="hidden sm:inline">{formatDate(poll.expireAt)}</span>
+                          <span className="sm:hidden">{new Date(poll.expireAt).toLocaleDateString()}</span>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="hidden sm:table-cell">
                           <span
-                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${
+                            className={`inline-flex items-center gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold ${
                               isExpired(poll.expireAt)
                                 ? 'bg-red-100 text-red-800'
                                 : 'bg-green-100 text-green-800'
@@ -233,31 +236,31 @@ const DashboardPage = () => {
                           </span>
                         </TableCell>
                         <TableCell>
-                          <div className="flex gap-2 justify-end">
+                          <div className="flex gap-1 sm:gap-2 justify-end">
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={() => navigate(`/dashboard/results/${poll._id}`)}
-                              className="border-blue-300 text-blue-600 hover:bg-blue-50 hover:border-blue-400"
+                              className="border-blue-300 text-blue-600 hover:bg-blue-50 hover:border-blue-400 px-2 sm:px-3 text-xs sm:text-sm"
                             >
-                              <Eye className="h-4 w-4 mr-1" />
-                              Results
+                              <Eye className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
+                              <span className="hidden sm:inline">Results</span>
                             </Button>
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={() => navigate(`/dashboard/edit/${poll._id}`)}
-                              className="border-purple-300 text-purple-600 hover:bg-purple-50 hover:border-purple-400"
+                              className="border-purple-300 text-purple-600 hover:bg-purple-50 hover:border-purple-400 px-2 sm:px-3"
                             >
-                              <Edit2 className="h-4 w-4" />
+                              <Edit2 className="h-3 w-3 sm:h-4 sm:w-4" />
                             </Button>
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={() => handleDelete(poll._id)}
-                              className="border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400"
+                              className="border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400 px-2 sm:px-3"
                             >
-                              <Trash2 className="h-4 w-4" />
+                              <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
                             </Button>
                           </div>
                         </TableCell>
@@ -265,6 +268,8 @@ const DashboardPage = () => {
                     ))}
                   </TableBody>
                 </Table>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
