@@ -10,6 +10,13 @@ import CreatePollPage from './pages/CreatePollPage';
 import EditPollPage from './pages/EditPollPage';
 import ResultsPage from './pages/ResultsPage';
 import PublicPollPage from './pages/PublicPollPage';
+import PublicEventsPage from './pages/PublicEventsPage'; // 🆕 PUBLIC EVENTS PAGE
+// 🆕 BOOKING SYSTEM IMPORTS - Can be removed if system not needed
+import CreateBookingVenuePage from './pages/CreateBookingVenuePage';
+import PublicBookingPage from './pages/PublicBookingPage';
+import VenueDetailsPage from './pages/VenueDetailsPage';
+import PublicBookingMenuPage from './pages/PublicBookingMenuPage';
+import EditBookingVenuePage from './pages/EditBookingVenuePage';
 
 function App() {
   return (
@@ -20,6 +27,10 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/poll/:pollId" element={<PublicPollPage />} />
+        <Route path="/events" element={<PublicEventsPage />} /> {/* 🆕 PUBLIC EVENTS PAGE */}
+        {/* 🆕 BOOKING SYSTEM ROUTES - Can be removed if system not needed */}
+        <Route path="/bookings" element={<PublicBookingMenuPage />} />
+        <Route path="/booking/:venueId" element={<PublicBookingPage />} />
         <Route
           path="/dashboard"
           element={
@@ -49,6 +60,31 @@ function App() {
           element={
             <ProtectedRoute>
               <ResultsPage />
+            </ProtectedRoute>
+          }
+        />
+        {/* 🆕 BOOKING SYSTEM ROUTES - Can be removed if system not needed */}
+        <Route
+          path="/dashboard/bookings/create-venue"
+          element={
+            <ProtectedRoute>
+              <CreateBookingVenuePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/bookings/venue/:venueId"
+          element={
+            <ProtectedRoute>
+              <VenueDetailsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/bookings/edit-venue/:venueId"
+          element={
+            <ProtectedRoute>
+              <EditBookingVenuePage />
             </ProtectedRoute>
           }
         />

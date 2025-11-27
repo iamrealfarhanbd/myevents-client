@@ -1,7 +1,7 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
-import { LogOut, Sparkles, LayoutDashboard, Home } from 'lucide-react';
+import { LogOut, Sparkles, LayoutDashboard, Home, Utensils, Calendar } from 'lucide-react';
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
@@ -43,6 +43,26 @@ const Navbar = () => {
                   <Home className="sm:mr-2 h-4 w-4" />
                   <span className="hidden sm:inline">Home</span>
                 </Button>
+                {/* 🆕 PUBLIC EVENTS PAGE */}
+                <Button 
+                  variant="ghost" 
+                  onClick={() => navigate('/events')}
+                  className="hover:bg-purple-50 text-sm sm:text-base px-2 sm:px-4"
+                  size="sm"
+                >
+                  <Calendar className="sm:mr-2 h-4 w-4" />
+                  <span className="hidden sm:inline">Events</span>
+                </Button>
+                {/* 🆕 BOOKING SYSTEM - Can be removed if system not needed */}
+                <Button 
+                  variant="ghost" 
+                  onClick={() => navigate('/bookings')}
+                  className="hover:bg-green-50 text-sm sm:text-base px-2 sm:px-4"
+                  size="sm"
+                >
+                  <Utensils className="sm:mr-2 h-4 w-4" />
+                  <span className="hidden sm:inline">Book Table</span>
+                </Button>
                 <Button 
                   variant="ghost" 
                   onClick={() => navigate('/dashboard')}
@@ -64,6 +84,35 @@ const Navbar = () => {
               </>
             ) : (
               <>
+                <Button 
+                  variant="ghost" 
+                  onClick={() => navigate('/')}
+                  className="hover:bg-blue-50 hidden sm:flex text-sm sm:text-base px-2 sm:px-4"
+                  size="sm"
+                >
+                  <Home className="sm:mr-2 h-4 w-4" />
+                  <span className="hidden sm:inline">Home</span>
+                </Button>
+                {/* 🆕 PUBLIC EVENTS PAGE - Visible to everyone */}
+                <Button 
+                  variant="ghost" 
+                  onClick={() => navigate('/events')}
+                  className="hover:bg-purple-50 text-sm sm:text-base px-2 sm:px-4"
+                  size="sm"
+                >
+                  <Calendar className="sm:mr-2 h-4 w-4" />
+                  <span className="hidden sm:inline">Events</span>
+                </Button>
+                {/* 🆕 BOOKING SYSTEM - Visible to everyone */}
+                <Button 
+                  variant="ghost" 
+                  onClick={() => navigate('/bookings')}
+                  className="hover:bg-green-50 text-sm sm:text-base px-2 sm:px-4"
+                  size="sm"
+                >
+                  <Utensils className="sm:mr-2 h-4 w-4" />
+                  <span className="hidden sm:inline">Book Table</span>
+                </Button>
                 <Button 
                   variant="ghost" 
                   onClick={() => navigate('/login')}

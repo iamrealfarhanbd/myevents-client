@@ -437,87 +437,14 @@ const EditPollPage = () => {
                     {showCalendar && (
                       <div className="fixed sm:absolute z-[9999] bottom-full mb-2 left-4 right-4 sm:left-0 sm:right-auto max-w-sm mx-auto sm:max-w-none">
                         <div className="relative bg-gradient-to-br from-white to-purple-50 border-2 border-purple-400 rounded-2xl shadow-2xl p-5">
-                          {/* Year and Month Selectors */}
-                          <div className="flex gap-3 mb-4 pb-3 border-b-2 border-purple-100">
-                            <div className="flex-1">
-                              <label className="block text-xs font-semibold text-gray-600 mb-1">Year</label>
-                              <select
-                                value={selectedDate ? selectedDate.getFullYear() : new Date().getFullYear()}
-                                onChange={(e) => {
-                                  const newDate = selectedDate ? new Date(selectedDate) : new Date();
-                                  newDate.setFullYear(parseInt(e.target.value));
-                                  setSelectedDate(newDate);
-                                }}
-                                className="w-full px-3 py-2 border-2 border-purple-200 rounded-lg text-sm font-medium focus:border-purple-500 focus:outline-none bg-gradient-to-r from-purple-50 to-blue-50"
-                              >
-                                {(() => {
-                                  const currentYear = selectedDate ? selectedDate.getFullYear() : new Date().getFullYear();
-                                  const currentDisplayYear = new Date().getFullYear();
-                                  const startYear = Math.max(currentDisplayYear, currentYear - 2);
-                                  const endYear = currentYear + 10;
-                                  return Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i).map(year => (
-                                    <option key={year} value={year}>{year}</option>
-                                  ));
-                                })()}
-                              </select>
-                            </div>
-                            <div className="flex-1">
-                              <label className="block text-xs font-semibold text-gray-600 mb-1">Month</label>
-                              <select
-                                value={selectedDate ? selectedDate.getMonth() : new Date().getMonth()}
-                                onChange={(e) => {
-                                  const newDate = selectedDate ? new Date(selectedDate) : new Date();
-                                  newDate.setMonth(parseInt(e.target.value));
-                                  setSelectedDate(newDate);
-                                }}
-                                className="w-full px-3 py-2 border-2 border-purple-200 rounded-lg text-sm font-medium focus:border-purple-500 focus:outline-none bg-gradient-to-r from-purple-50 to-blue-50"
-                              >
-                                {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((month, index) => (
-                                  <option key={index} value={index}>{month}</option>
-                                ))}
-                              </select>
-                            </div>
-                          </div>
-
-                          {/* Calendar with Navigation Arrows */}
-                          <div className="relative">
-                            {/* Left Arrow */}
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const newDate = new Date(selectedDate || new Date());
-                                newDate.setMonth(newDate.getMonth() - 1);
-                                setSelectedDate(newDate);
-                              }}
-                              className="absolute left-0 sm:left-4 top-0 z-10 h-10 w-10 bg-transparent hover:bg-purple-100 rounded-md transition-colors flex items-center justify-center"
-                            >
-                              <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700" />
-                            </button>
-                            
-                            {/* Right Arrow */}
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const newDate = new Date(selectedDate || new Date());
-                                newDate.setMonth(newDate.getMonth() + 1);
-                                setSelectedDate(newDate);
-                              }}
-                              className="absolute right-0 sm:right-4 top-0 z-10 h-10 w-10 bg-transparent hover:bg-purple-100 rounded-md transition-colors flex items-center justify-center"
-                            >
-                              <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700" />
-                            </button>
-
+                          <div className="flex justify-center">
                             <Calendar
-                              mode="single"
-                              selected={selectedDate}
-                              month={selectedDate || new Date()}
-                              onMonthChange={setSelectedDate}
-                              onSelect={(date) => {
+                              value={selectedDate}
+                              onChange={(date) => {
                                 setSelectedDate(date);
                                 setShowCalendar(false);
                               }}
-                              disabled={(date) => date < new Date().setHours(0, 0, 0, 0)}
-                              className="rounded-xl"
+                              className="rounded-xl shadow-lg border-2 border-purple-200 p-4 bg-white"
                             />
                           </div>
                         </div>

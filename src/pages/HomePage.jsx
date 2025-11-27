@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock, Lock, Trash2, BarChart, Sparkles, Zap, Shield, TrendingUp, Users, QrCode } from 'lucide-react';
+import { Clock, Lock, Trash2, BarChart, Sparkles, Zap, Shield, TrendingUp, Users, QrCode, Calendar, Utensils, ChevronRight } from 'lucide-react';
 
 const HomePage = () => {
   const { isAuthenticated } = useAuth();
@@ -147,6 +147,72 @@ const HomePage = () => {
               </Card>
             );
           })}
+        </div>
+
+        {/* Public Access Section - Events & Bookings */}
+        <div className="max-w-5xl mx-auto mb-20">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+              Explore & Participate
+            </h2>
+            <p className="text-lg sm:text-xl text-gray-600">
+              Join events and make reservations - no login required
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Events Card */}
+            <Card 
+              onClick={() => navigate('/events')}
+              className="border-0 shadow-xl bg-gradient-to-br from-purple-600 to-blue-600 text-white hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 cursor-pointer overflow-hidden group"
+            >
+              <CardContent className="p-8 relative">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500" />
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="p-4 bg-white/20 rounded-2xl backdrop-blur-sm">
+                      <Calendar className="h-12 w-12 text-white" />
+                    </div>
+                    <ChevronRight className="h-8 w-8 text-white/60 group-hover:text-white group-hover:translate-x-2 transition-all duration-300" />
+                  </div>
+                  <h3 className="text-3xl font-bold mb-3">Browse Events</h3>
+                  <p className="text-purple-100 text-lg mb-6">
+                    Discover active polls and events. Vote on your favorites and see real-time results.
+                  </p>
+                  <div className="flex items-center gap-2 text-purple-100">
+                    <Users className="h-5 w-5" />
+                    <span className="text-sm">Public Access • No Login Required</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Bookings Card */}
+            <Card 
+              onClick={() => navigate('/bookings')}
+              className="border-0 shadow-xl bg-gradient-to-br from-green-600 to-teal-600 text-white hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 cursor-pointer overflow-hidden group"
+            >
+              <CardContent className="p-8 relative">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500" />
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="p-4 bg-white/20 rounded-2xl backdrop-blur-sm">
+                      <Utensils className="h-12 w-12 text-white" />
+                    </div>
+                    <ChevronRight className="h-8 w-8 text-white/60 group-hover:text-white group-hover:translate-x-2 transition-all duration-300" />
+                  </div>
+                  <h3 className="text-3xl font-bold mb-3">Book a Table</h3>
+                  <p className="text-green-100 text-lg mb-6">
+                    Reserve your table at available venues. Choose date, time, and table - instantly.
+                  </p>
+                  <div className="flex items-center gap-2 text-green-100">
+                    <Users className="h-5 w-5" />
+                    <span className="text-sm">Public Access • No Login Required</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         {/* How It Works Section */}

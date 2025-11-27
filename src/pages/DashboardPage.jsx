@@ -6,10 +6,15 @@ import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Plus, Edit2, Trash2, BarChart3, Eye, Clock, Calendar, Sparkles, TrendingUp } from 'lucide-react';
+import { Plus, Edit2, Trash2, BarChart3, Eye, Clock, Calendar, Sparkles, TrendingUp, Utensils } from 'lucide-react';
 import config from '@/config/config';
+// 🆕 BOOKING SYSTEM IMPORT - Can be removed if system not needed
+import BookingManagementTab from '@/components/BookingManagementTab';
 
 const DashboardPage = () => {
+  // 🆕 BOOKING SYSTEM STATE - Can be removed if system not needed
+  const [activeTab, setActiveTab] = useState('polls'); // 'polls' or 'bookings'
+  
   const [polls, setPolls] = useState([]);
   const [loading, setLoading] = useState(true);
   const { token } = useAuth();
@@ -77,22 +82,50 @@ const DashboardPage = () => {
                 <span className="text-xs sm:text-sm font-semibold text-purple-900">Dashboard</span>
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-2 sm:mb-3">
-                My <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Polls</span>
+                My <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{activeTab === 'polls' ? 'Polls' : 'Bookings'}</span>
               </h1>
-              <p className="text-xl text-gray-600">Create and manage your temporary polls</p>
+              <p className="text-xl text-gray-600">
+                {activeTab === 'polls' ? 'Create and manage your temporary polls' : 'Manage table bookings and reservations'}
+              </p>
             </div>
             <Button 
-              onClick={() => navigate('/dashboard/create')} 
+              onClick={() => activeTab === 'polls' ? navigate('/dashboard/create') : navigate('/dashboard/bookings/create-venue')} 
               size="lg"
               className="text-lg px-8 py-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-xl transform hover:scale-105 transition-all duration-200"
             >
               <Plus className="mr-2 h-5 w-5" />
-              Create New Poll
+              {activeTab === 'polls' ? 'Create New Poll' : 'Create Venue'}
             </Button>
           </div>
 
-          {/* Stats Cards */}
-          {polls.length > 0 && (
+          {/* 🆕 MODERN TAB NAVIGATION - Can be removed if booking system not needed */}
+          <div className="flex gap-2 p-1.5 bg-white rounded-xl shadow-lg border-2 border-gray-100 mb-6">
+            <button
+              onClick={() => setActiveTab('polls')}
+              className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
+                activeTab === 'polls'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                  : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              <BarChart3 className="h-5 w-5" />
+              <span>Polls</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('bookings')}
+              className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
+                activeTab === 'bookings'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                  : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              <Utensils className="h-5 w-5" />
+              <span>Table Bookings</span>
+            </button>
+          </div>
+
+          {/* Stats Cards - Only show for polls tab */}
+          {activeTab === 'polls' && polls.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-50 to-blue-100">
                 <CardContent className="pt-6">
@@ -139,6 +172,12 @@ const DashboardPage = () => {
           )}
         </div>
 
+        {/* 🆕 RENDER CONTENT BASED ON ACTIVE TAB */}
+        {activeTab === 'bookings' ? (
+          <BookingManagementTab />
+        ) : (
+          <>
+        {/* POLLS TAB CONTENT */}
         {loading ? (
           <Card className="border-0 shadow-xl">
             <CardContent className="py-20">
@@ -273,6 +312,9 @@ const DashboardPage = () => {
               </div>
             </CardContent>
           </Card>
+        )}
+        {/* END POLLS TAB CONTENT */}
+        </>
         )}
       </div>
     </div>

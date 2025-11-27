@@ -1,0 +1,152 @@
+/* Theme Calendar Styles - Purple & Blue */
+.themed-calendar {
+  width: 100%;
+}
+
+.themed-calendar .react-calendar {
+  width: 100%;
+  border: none;
+  font-family: inherit;
+  background: transparent;
+}
+
+/* Navigation Header */
+.themed-calendar .react-calendar__navigation {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  height: 50px;
+}
+
+/* Hide Year/Month Dropdowns - Only Show Navigation Label */
+.themed-calendar .react-calendar__navigation__label {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #7c3aed;
+  background: transparent;
+  border: none;
+  pointer-events: none;
+  flex-grow: 1;
+}
+
+.themed-calendar .react-calendar__navigation__label:hover {
+  background: transparent;
+}
+
+/* Navigation Arrows */
+.themed-calendar .react-calendar__navigation__arrow {
+  font-size: 1.5rem;
+  color: #6b7280;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  min-width: 44px;
+  height: 44px;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.themed-calendar .react-calendar__navigation__arrow:hover:enabled {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+.themed-calendar .react-calendar__navigation__arrow:disabled {
+  opacity: 0.3;
+}
+
+/* Weekday Headers */
+.themed-calendar .react-calendar__month-view__weekdays {
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+.themed-calendar .react-calendar__month-view__weekdays__weekday {
+  padding: 0.5rem;
+}
+
+.themed-calendar .react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+}
+
+/* Calendar Days Grid */
+.themed-calendar .react-calendar__month-view__days {
+  display: grid !important;
+}
+
+/* Day Tiles */
+.themed-calendar .react-calendar__tile {
+  max-width: 100%;
+  padding: 0.75rem;
+  background: transparent;
+  text-align: center;
+  border: none;
+  font-size: 0.9375rem;
+  color: #1f2937;
+  height: 45px;
+  border-radius: 50%;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.themed-calendar .react-calendar__tile:enabled:hover {
+  background: #f3f4f6;
+  cursor: pointer;
+}
+
+.themed-calendar .react-calendar__tile:disabled {
+  color: #d1d5db;
+  opacity: 0.5;
+}
+
+/* Today's Date - Blue Circle */
+.themed-calendar .react-calendar__tile--now {
+  background: #3b82f6;
+  color: white;
+  font-weight: 600;
+}
+
+.themed-calendar .react-calendar__tile--now:enabled:hover {
+  background: #2563eb;
+}
+
+/* Selected Date - Purple Circle */
+.themed-calendar .react-calendar__tile--active {
+  background: #7c3aed;
+  color: white;
+  font-weight: 600;
+}
+
+.themed-calendar .react-calendar__tile--active:enabled:hover {
+  background: #6d28d9;
+}
+
+/* If Today is Selected - Keep Purple */
+.themed-calendar .react-calendar__tile--now.react-calendar__tile--active {
+  background: #7c3aed;
+}
+
+.themed-calendar .react-calendar__tile--now.react-calendar__tile--active:enabled:hover {
+  background: #6d28d9;
+}
+
+/* Neighboring Month Days */
+.themed-calendar .react-calendar__month-view__days__day--neighboringMonth {
+  color: #d1d5db;
+  opacity: 0.4;
+}
+
+/* Remove Focus Outline */
+.themed-calendar .react-calendar *:focus {
+  outline: none;
+}
+
+/* Remove Year/Month View - Force Month View Only */
+.themed-calendar .react-calendar__year-view,
+.themed-calendar .react-calendar__decade-view,
+.themed-calendar .react-calendar__century-view {
+  display: none !important;
+}
