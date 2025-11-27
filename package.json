@@ -1,8 +1,9 @@
 {
-  "name": "myevents-client",
+  "name": "eventpro-client",
+  "description": "Event Management & Booking System - Frontend",
   "private": true,
   "homepage": "[https://iamrealfarhanbd.github.io/myevents-client](https://iamrealfarhanbd.github.io/myevents-client)",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

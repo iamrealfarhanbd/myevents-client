@@ -1,24 +1,62 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { useSettings } from '@/context/SettingsContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Clock, Lock, Trash2, BarChart, Sparkles, Zap, Shield, TrendingUp, Users, QrCode, Calendar, Utensils, ChevronRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import config from '@/config/config';
 
 const HomePage = () => {
   const { isAuthenticated } = useAuth();
+  const { settings } = useSettings();
   const navigate = useNavigate();
+  const [checkingSetup, setCheckingSetup] = useState(true);
+  const [setupComplete, setSetupComplete] = useState(true);
+
+  useEffect(() => {
+    // Check if setup is needed on first visit
+    const checkSetup = async () => {
+      try {
+        const response = await axios.get(`${config.apiUrl}/auth/check-setup`);
+        setSetupComplete(response.data.isSetupComplete);
+        if (!response.data.isSetupComplete) {
+          // No admin exists, redirect to setup
+          navigate('/setup');
+        }
+      } catch (error) {
+        console.error('Setup check failed:', error);
+      } finally {
+        setCheckingSetup(false);
+      }
+    };
+    
+    checkSetup();
+  }, [navigate]);
+
+  if (checkingSetup) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   const features = [
     {
-      icon: Zap,
-      title: 'Lightning Fast',
-      description: 'Create and deploy polls in seconds with our intuitive interface',
+      icon: Calendar,
+      title: 'Event Polling',
+      description: 'Create smart polls with auto-expiry for event planning and feedback',
       gradient: 'from-yellow-400 to-orange-500'
     },
     {
-      icon: Shield,
-      title: 'Secure & Private',
-      description: 'Enterprise-grade security with JWT authentication & encryption',
+      icon: Utensils,
+      title: 'Table Booking',
+      description: 'Manage venue reservations with complete booking management system',
       gradient: 'from-green-400 to-cyan-500'
     },
     {
@@ -30,7 +68,7 @@ const HomePage = () => {
     {
       icon: TrendingUp,
       title: 'Real-time Analytics',
-      description: 'Track responses live and export comprehensive CSV reports',
+      description: 'Track responses and bookings live with comprehensive reports',
       gradient: 'from-pink-400 to-rose-500'
     }
   ];
@@ -50,17 +88,17 @@ const HomePage = () => {
           <div className="text-center max-w-5xl mx-auto">
             <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full mb-6 sm:mb-8 animate-pulse">
               <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
-              <span className="text-xs sm:text-sm font-semibold text-purple-900">Temporary Poll Platform</span>
+              <span className="text-xs sm:text-sm font-semibold text-purple-900">Event Management & Booking System</span>
             </div>
             
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-gray-900 mb-4 sm:mb-6 leading-tight px-2">
-              Create <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Smart Polls</span>
-              <br className="hidden sm:block" /><span className="sm:hidden"> </span>That Vanish on Schedule
+              Manage <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Events & Bookings</span>
+              <br className="hidden sm:block" /><span className="sm:hidden"> </span>with Smart Automation
             </h1>
             
             <p className="text-base sm:text-lg lg:text-2xl text-gray-600 mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed px-4">
-              Build beautiful, secure polls with automatic deletion. Perfect for events, surveys, 
-              and time-sensitive feedback. No data left behind. 🚀
+              Complete solution for event polling and table bookings. Create time-sensitive polls,
+              manage venue reservations, and automate your event workflow. 🎉
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-12 px-4">
@@ -77,11 +115,11 @@ const HomePage = () => {
                 <>
                   <Button 
                     size="lg" 
-                    onClick={() => navigate('/register')}
+                    onClick={() => navigate(setupComplete ? '/login' : '/setup')}
                     className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-xl"
                   >
                     <Sparkles className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                    Get Started Free
+                    {setupComplete ? 'Admin Login' : 'Setup Your Business'}
                   </Button>
                   <Button 
                     size="lg" 
@@ -118,10 +156,10 @@ const HomePage = () => {
       <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 lg:py-20">
         <div className="text-center mb-10 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 px-2">
-            Why Choose MyEvents?
+            Why Choose EventPro?
           </h2>
           <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-            Powerful features designed for modern polling needs
+            Complete solution for event management and venue bookings
           </p>
         </div>
 
@@ -233,12 +271,12 @@ const HomePage = () => {
                   <div className="bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl shadow-lg">
                     1
                   </div>
-                  <CardTitle className="text-2xl">Create a Poll</CardTitle>
+                  <CardTitle className="text-2xl">Create Events</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-700 text-lg">
-                  Sign up and craft your poll with custom questions, multiple choice options, and flexible question types
+                  Set up polls and venues with custom options, time slots, and flexible configurations
                 </p>
               </CardContent>
             </Card>
@@ -249,12 +287,12 @@ const HomePage = () => {
                   <div className="bg-gradient-to-br from-purple-600 to-pink-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl shadow-lg">
                     2
                   </div>
-                  <CardTitle className="text-2xl">Share Instantly</CardTitle>
+                  <CardTitle className="text-2xl">Share & Accept</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-700 text-lg">
-                  Get a unique link and QR code to share via email, social media, or print for your event
+                  Share polls via links and QR codes. Accept table bookings with instant confirmations
                 </p>
               </CardContent>
             </Card>
@@ -265,12 +303,12 @@ const HomePage = () => {
                   <div className="bg-gradient-to-br from-pink-600 to-rose-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl shadow-lg">
                     3
                   </div>
-                  <CardTitle className="text-2xl">Collect Responses</CardTitle>
+                  <CardTitle className="text-2xl">Track Activity</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-700 text-lg">
-                  Watch submissions roll in real-time, with participant info and detailed analytics
+                  Monitor poll responses and bookings in real-time with comprehensive analytics
                 </p>
               </CardContent>
             </Card>
@@ -281,12 +319,12 @@ const HomePage = () => {
                   <div className="bg-gradient-to-br from-green-600 to-cyan-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl shadow-lg">
                     4
                   </div>
-                  <CardTitle className="text-2xl">Auto-Delete</CardTitle>
+                  <CardTitle className="text-2xl">Auto-Manage</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-700 text-lg">
-                  Poll expires on schedule and all data vanishes automatically - no manual cleanup needed
+                  Polls auto-expire on schedule, bookings confirmed instantly - fully automated workflow
                 </p>
               </CardContent>
             </Card>
@@ -297,9 +335,9 @@ const HomePage = () => {
         <div className="mt-20 text-center">
           <Card className="border-0 shadow-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white overflow-hidden">
             <CardContent className="py-16 relative">
-              <h2 className="text-4xl font-bold mb-4">Ready to Create Your First Poll?</h2>
+              <h2 className="text-4xl font-bold mb-4">Ready to Manage Your Events?</h2>
               <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                Join thousands of users creating secure, temporary polls for events, surveys, and feedback
+                Complete platform for event polling and table bookings - perfect for venues, hotels, and event organizers
               </p>
               {!isAuthenticated && (
                 <Button 

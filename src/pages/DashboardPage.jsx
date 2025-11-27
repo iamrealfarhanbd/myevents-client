@@ -122,6 +122,13 @@ const DashboardPage = () => {
               <Utensils className="h-5 w-5" />
               <span>Table Bookings</span>
             </button>
+            <button
+              onClick={() => navigate('/dashboard/appearance')}
+              className="px-6 py-3 rounded-lg font-semibold transition-all duration-200 text-gray-600 hover:bg-gray-50 flex items-center gap-2"
+            >
+              <Sparkles className="h-5 w-5" />
+              <span>Settings</span>
+            </button>
           </div>
 
           {/* Stats Cards - Only show for polls tab */}

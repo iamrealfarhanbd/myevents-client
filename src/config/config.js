@@ -5,8 +5,8 @@ const config = {
   publicUrl: import.meta.env.VITE_PUBLIC_URL || 'http://localhost:5173',
   
   // App Info
-  appName: import.meta.env.VITE_APP_NAME || 'MyEvents',
-  appDescription: import.meta.env.VITE_APP_DESCRIPTION || 'Temporary Poll Platform',
+  appName: import.meta.env.VITE_APP_NAME || 'EventPro',
+  appDescription: import.meta.env.VITE_APP_DESCRIPTION || 'Event Management & Booking System',
   
   // API Endpoints
   endpoints: {

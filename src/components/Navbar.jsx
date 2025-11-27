@@ -1,10 +1,12 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { useSettings } from '@/context/SettingsContext';
 import { Button } from '@/components/ui/button';
 import { LogOut, Sparkles, LayoutDashboard, Home, Utensils, Calendar } from 'lucide-react';
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
+  const { settings } = useSettings();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -17,12 +19,32 @@ const Navbar = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center h-14 sm:h-16">
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="p-1.5 sm:p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg group-hover:shadow-lg transition-shadow">
-              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-            </div>
-            <span className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              MyEvents
-            </span>
+            {settings.logo ? (
+              <img 
+                src={settings.logo} 
+                alt={settings.businessName} 
+                className="h-8 sm:h-10 w-auto object-contain"
+              />
+            ) : (
+              <>
+                <div 
+                  className="p-1.5 sm:p-2 rounded-lg group-hover:shadow-lg transition-shadow"
+                  style={{ 
+                    background: `linear-gradient(to right, var(--color-primary), var(--color-secondary))` 
+                  }}
+                >
+                  <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                </div>
+                <span 
+                  className="text-lg sm:text-2xl font-bold bg-clip-text text-transparent"
+                  style={{ 
+                    backgroundImage: `linear-gradient(to right, var(--color-primary), var(--color-secondary))` 
+                  }}
+                >
+                  {settings.businessName}
+                </span>
+              </>
+            )}
           </Link>
 
           <div className="flex items-center gap-1.5 sm:gap-3">
@@ -114,21 +136,12 @@ const Navbar = () => {
                   <span className="hidden sm:inline">Book Table</span>
                 </Button>
                 <Button 
-                  variant="ghost" 
                   onClick={() => navigate('/login')}
-                  className="hover:bg-purple-50 text-sm sm:text-base px-3 sm:px-4"
-                  size="sm"
-                >
-                  Login
-                </Button>
-                <Button 
-                  onClick={() => navigate('/register')}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md text-sm sm:text-base px-3 sm:px-4"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md text-sm sm:text-base px-4 sm:px-6"
                   size="sm"
                 >
                   <Sparkles className="sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
-                  <span className="hidden sm:inline">Register</span>
-                  <span className="sm:hidden">Sign Up</span>
+                  <span>Admin Login</span>
                 </Button>
               </>
             )}
