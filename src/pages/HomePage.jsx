@@ -357,11 +357,11 @@ const HomePage = () => {
               {!isAuthenticated && (
                 <Button 
                   size="lg" 
-                  onClick={() => navigate('/register')}
+                  onClick={() => navigate('/setup')}
                   className="text-lg px-10 py-6 bg-white text-purple-600 hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-xl font-bold"
                 >
                   <Sparkles className="mr-2 h-6 w-6" />
-                  Start Creating Free
+                  Admin Setup
                 </Button>
               )}
             </CardContent>

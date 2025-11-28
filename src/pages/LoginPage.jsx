@@ -113,23 +113,6 @@ const LoginPage = () => {
                 )}
               </Button>
             </form>
-            <div className="mt-6 text-center">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-200"></div>
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white text-gray-500">New to MyEvents?</span>
-                </div>
-              </div>
-              <Link 
-                to="/register" 
-                className="mt-4 inline-flex items-center gap-2 text-base font-semibold text-purple-600 hover:text-purple-700 transition-colors"
-              >
-                Create an account
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
           </CardContent>
         </Card>
       </div>

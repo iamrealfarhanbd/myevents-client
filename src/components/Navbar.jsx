@@ -65,7 +65,6 @@ const Navbar = () => {
                   <Home className="sm:mr-2 h-4 w-4" />
                   <span className="hidden sm:inline">Home</span>
                 </Button>
-                {/* 🆕 PUBLIC EVENTS PAGE */}
                 <Button 
                   variant="ghost" 
                   onClick={() => navigate('/events')}
@@ -75,7 +74,6 @@ const Navbar = () => {
                   <Calendar className="sm:mr-2 h-4 w-4" />
                   <span className="hidden sm:inline">Events</span>
                 </Button>
-                {/* 🆕 BOOKING SYSTEM - Can be removed if system not needed */}
                 <Button 
                   variant="ghost" 
                   onClick={() => navigate('/bookings')}
@@ -115,7 +113,6 @@ const Navbar = () => {
                   <Home className="sm:mr-2 h-4 w-4" />
                   <span className="hidden sm:inline">Home</span>
                 </Button>
-                {/* 🆕 PUBLIC EVENTS PAGE - Visible to everyone */}
                 <Button 
                   variant="ghost" 
                   onClick={() => navigate('/events')}
@@ -125,7 +122,6 @@ const Navbar = () => {
                   <Calendar className="sm:mr-2 h-4 w-4" />
                   <span className="hidden sm:inline">Events</span>
                 </Button>
-                {/* 🆕 BOOKING SYSTEM - Visible to everyone */}
                 <Button 
                   variant="ghost" 
                   onClick={() => navigate('/bookings')}

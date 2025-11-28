@@ -5,7 +5,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 import DashboardLayout from './layouts/DashboardLayout';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
 import SetupPage from './pages/SetupPage';
 import DashboardOverviewPage from './pages/DashboardOverviewPage';
 import PollsManagementPage from './pages/PollsManagementPage';
@@ -14,10 +13,9 @@ import CreatePollPage from './pages/CreatePollPage';
 import EditPollPage from './pages/EditPollPage';
 import ResultsPage from './pages/ResultsPage';
 import PublicPollPage from './pages/PublicPollPage';
-import PublicEventsPage from './pages/PublicEventsPage'; // 🆕 PUBLIC EVENTS PAGE
+import PublicEventsPage from './pages/PublicEventsPage';
 import AppearanceSettingsPage from './pages/AppearanceSettingsPage';
 import AccountSettingsPage from './pages/AccountSettingsPage';
-// 🆕 BOOKING SYSTEM IMPORTS - Can be removed if system not needed
 import CreateBookingVenuePage from './pages/CreateBookingVenuePage';
 import PublicBookingPage from './pages/PublicBookingPage';
 import VenueDetailsPage from './pages/VenueDetailsPage';
@@ -36,11 +34,8 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/setup" element={<SetupPage />} />
         <Route path="/login" element={<LoginPage />} />
-        {/* Register route commented for ThemeForest - Admin only system */}
-        {/* <Route path="/register" element={<RegisterPage />} /> */}
         <Route path="/poll/:pollId" element={<PublicPollPage />} />
-        <Route path="/events" element={<PublicEventsPage />} /> {/* 🆕 PUBLIC EVENTS PAGE */}
-        {/* 🆕 BOOKING SYSTEM ROUTES - Can be removed if system not needed */}
+        <Route path="/events" element={<PublicEventsPage />} />
         <Route path="/bookings" element={<PublicBookingMenuPage />} />
         <Route path="/booking/:venueId" element={<PublicBookingPage />} />
         
