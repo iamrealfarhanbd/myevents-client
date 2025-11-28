@@ -112,6 +112,7 @@ const SetupPage = () => {
             Welcome to <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">EventPro</span>
           </h1>
           <p className="text-lg text-gray-600">Set up your event management system in 2 simple steps</p>
+          <p className="text-xs text-gray-500 mt-2">🔐 Administrator Setup Only - This creates the main admin account</p>
         </div>
 
         {/* Progress Steps */}

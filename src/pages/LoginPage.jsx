@@ -47,7 +47,8 @@ const LoginPage = () => {
           <h1 className="text-4xl font-extrabold text-gray-900 mb-2">
             Welcome <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Back</span>
           </h1>
-          <p className="text-gray-600">Sign in to manage your events and bookings</p>
+          <p className="text-gray-600">Admin access to manage your events and bookings</p>
+          <p className="text-xs text-gray-500 mt-1">🔒 Administrator Login Only</p>
         </div>
 
         <Card className="border-0 shadow-2xl bg-white/90 backdrop-blur">

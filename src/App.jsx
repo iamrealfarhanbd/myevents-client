@@ -16,6 +16,7 @@ import ResultsPage from './pages/ResultsPage';
 import PublicPollPage from './pages/PublicPollPage';
 import PublicEventsPage from './pages/PublicEventsPage'; // 🆕 PUBLIC EVENTS PAGE
 import AppearanceSettingsPage from './pages/AppearanceSettingsPage';
+import AccountSettingsPage from './pages/AccountSettingsPage';
 // 🆕 BOOKING SYSTEM IMPORTS - Can be removed if system not needed
 import CreateBookingVenuePage from './pages/CreateBookingVenuePage';
 import PublicBookingPage from './pages/PublicBookingPage';
@@ -56,6 +57,7 @@ function App() {
                   <Route path="edit/:pollId" element={<EditPollPage />} />
                   <Route path="results/:pollId" element={<ResultsPage />} />
                   <Route path="appearance" element={<AppearanceSettingsPage />} />
+                  <Route path="account" element={<AccountSettingsPage />} />
                   <Route path="bookings" element={<BookingsManagementPage />} />
                   <Route path="bookings/create-venue" element={<CreateBookingVenuePage />} />
                   <Route path="bookings/venue/:venueId" element={<VenueDetailsPage />} />

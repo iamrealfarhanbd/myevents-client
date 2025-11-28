@@ -18,6 +18,8 @@ import {
   Palette,
   Users,
   Building2,
+  Shield,
+  User,
   FileText,
   Bell,
   Search
@@ -65,6 +67,12 @@ const DashboardLayout = ({ children }) => {
       title: 'Appearance',
       icon: Palette,
       path: '/dashboard/appearance',
+      badge: null
+    },
+    {
+      title: 'Account',
+      icon: User,
+      path: '/dashboard/account',
       badge: null
     }
   ];
@@ -267,22 +275,7 @@ const DashboardLayout = ({ children }) => {
             })}
           </nav>
 
-          {/* Quick Actions (Bottom of Sidebar) */}
-          {/* {sidebarOpen && (
-            <div className="px-3 mt-8">
-              <div className="p-4 bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg border border-purple-200">
-                <h3 className="font-semibold text-sm text-gray-900 mb-2">Quick Actions</h3>
-                <Button
-                  size="sm"
-                  onClick={() => navigate('/dashboard/create')}
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  New Poll
-                </Button>
-              </div>
-            </div>
-          )} */}
+          {/* Quick Actions (Bottom of Sidebar) - Commented out */}
         </div>
       </aside>
 

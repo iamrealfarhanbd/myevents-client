@@ -21,10 +21,7 @@ const HomePage = () => {
       try {
         const response = await axios.get(`${config.apiUrl}/auth/check-setup`);
         setSetupComplete(response.data.isSetupComplete);
-        if (!response.data.isSetupComplete) {
-          // No admin exists, redirect to setup
-          navigate('/setup');
-        }
+        // Don't redirect - just show coming soon page
       } catch (error) {
         console.error('Setup check failed:', error);
       } finally {
@@ -41,6 +38,34 @@ const HomePage = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show Coming Soon page if no admin exists
+  if (!setupComplete) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center px-4">
+        <div className="text-center max-w-2xl">
+          <div className="mb-8">
+            <div className="w-24 h-24 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mx-auto flex items-center justify-center animate-pulse">
+              <Sparkles className="h-12 w-12 text-white" />
+            </div>
+          </div>
+          <h1 className="text-5xl sm:text-6xl font-extrabold text-gray-900 mb-4">
+            Coming Soon
+          </h1>
+          <p className="text-xl text-gray-600 mb-6">
+            We're getting everything ready for you. Stay tuned!
+          </p>
+          <div className="inline-flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-lg">
+            <Clock className="h-5 w-5 text-purple-600 animate-spin" style={{ animationDuration: '3s' }} />
+            <span className="text-gray-700 font-medium">Setting things up...</span>
+          </div>
+          <p className="mt-8 text-sm text-gray-500">
+            Admin? Access setup at <code className="px-2 py-1 bg-gray-100 rounded text-purple-600">/setup</code>
+          </p>
         </div>
       </div>
     );
@@ -112,24 +137,14 @@ const HomePage = () => {
                   Go to Dashboard
                 </Button>
               ) : (
-                <>
-                  <Button 
-                    size="lg" 
-                    onClick={() => navigate(setupComplete ? '/login' : '/setup')}
-                    className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-xl"
-                  >
-                    <Sparkles className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                    {setupComplete ? 'Admin Login' : 'Setup Your Business'}
-                  </Button>
-                  <Button 
-                    size="lg" 
-                    variant="outline" 
-                    onClick={() => navigate('/login')}
-                    className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 border-2 border-purple-600 text-purple-600 hover:bg-purple-50 transform hover:scale-105 transition-all duration-200"
-                  >
-                    Login
-                  </Button>
-                </>
+                <Button 
+                  size="lg" 
+                  onClick={() => navigate('/events')}
+                  className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-xl"
+                >
+                  <Calendar className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                  View Events & Polls
+                </Button>
               )}
             </div>
 
