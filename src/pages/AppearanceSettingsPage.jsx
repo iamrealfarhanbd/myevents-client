@@ -6,13 +6,14 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Palette, Type, Image, Globe, Mail, Phone, MapPin, Facebook, Instagram, Twitter, Linkedin, Save, RefreshCw } from 'lucide-react';
+import { Palette, Type, Image, Globe, Mail, Phone, MapPin, Facebook, Instagram, Twitter, Linkedin, Save, RefreshCw, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const AppearanceSettingsPage = () => {
   const { settings, updateSettings, fetchSettings } = useSettings();
   const [formData, setFormData] = useState({});
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState({ logo: false, favicon: false });
 
   useEffect(() => {
     setFormData(settings);
@@ -20,6 +21,44 @@ const AppearanceSettingsPage = () => {
 
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleFileUpload = async (field, file) => {
+    if (!file) return;
+    
+    // Validate file type
+    const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/x-icon'];
+    if (!validTypes.includes(file.type)) {
+      toast.error('Please upload a valid image file (PNG, JPG, GIF, SVG, or ICO)');
+      return;
+    }
+
+    // Validate file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('File size should be less than 2MB');
+      return;
+    }
+
+    setUploading(prev => ({ ...prev, [field]: true }));
+
+    try {
+      // Convert to base64
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        handleChange(field, base64String);
+        toast.success(`${field === 'logo' ? 'Logo' : 'Favicon'} uploaded! Remember to save changes.`);
+        setUploading(prev => ({ ...prev, [field]: false }));
+      };
+      reader.onerror = () => {
+        toast.error('Failed to read file');
+        setUploading(prev => ({ ...prev, [field]: false }));
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      toast.error('Failed to upload file');
+      setUploading(prev => ({ ...prev, [field]: false }));
+    }
   };
 
   const handleSave = async () => {
@@ -97,31 +136,98 @@ const AppearanceSettingsPage = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="logo">Logo URL</Label>
-                  <Input
-                    id="logo"
-                    value={formData.logo || ''}
-                    onChange={(e) => handleChange('logo', e.target.value)}
-                    placeholder="https://example.com/logo.png"
-                  />
-                  <p className="text-sm text-gray-500">Enter the URL of your logo image</p>
+                  <Label htmlFor="logo">Logo Upload</Label>
+                  <div className="flex items-center gap-3">
+                    <Input
+                      id="logo"
+                      type="file"
+                      accept="image/png,image/jpeg,image/jpg,image/gif,image/svg+xml"
+                      onChange={(e) => handleFileUpload('logo', e.target.files[0])}
+                      disabled={uploading.logo}
+                      className="cursor-pointer"
+                    />
+                    {uploading.logo && (
+                      <div className="flex items-center gap-2 text-sm text-blue-600">
+                        <RefreshCw className="h-4 w-4 animate-spin" />
+                        Uploading...
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-500">Upload your logo (PNG, JPG, GIF, SVG - Max 2MB)</p>
+                  
+                  {/* Show Business Name Toggle */}
+                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg mt-3">
+                    <input
+                      type="checkbox"
+                      id="showBusinessNameInHeader"
+                      checked={formData.showBusinessNameInHeader === undefined || formData.showBusinessNameInHeader === null ? true : Boolean(formData.showBusinessNameInHeader)}
+                      onChange={(e) => handleChange('showBusinessNameInHeader', e.target.checked)}
+                      className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                    />
+                    <Label htmlFor="showBusinessNameInHeader" className="cursor-pointer mb-0">
+                      Show business name text next to logo in header
+                    </Label>
+                  </div>
+                  {formData.showBusinessNameInHeader !== undefined && (
+                    <p className="text-xs text-gray-500 mt-1 ml-7">
+                      Current value: {formData.showBusinessNameInHeader ? 'Enabled' : 'Disabled'}
+                    </p>
+                  )}
                   {formData.logo && (
-                    <div className="mt-4 p-4 border rounded-lg bg-white">
-                      <p className="text-sm font-medium mb-2">Logo Preview:</p>
-                      <img src={formData.logo} alt="Logo preview" className="h-16 w-auto object-contain" />
+                    <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg bg-white relative">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleChange('logo', '')}
+                        className="absolute top-2 right-2 h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                      <p className="text-sm font-medium mb-3 text-gray-700">Logo Preview:</p>
+                      <div className="flex items-center justify-center bg-gray-50 p-4 rounded">
+                        <img src={formData.logo} alt="Logo preview" className="h-20 w-auto object-contain" />
+                      </div>
                     </div>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="favicon">Favicon URL</Label>
-                  <Input
-                    id="favicon"
-                    value={formData.favicon || ''}
-                    onChange={(e) => handleChange('favicon', e.target.value)}
-                    placeholder="https://example.com/favicon.ico"
-                  />
-                  <p className="text-sm text-gray-500">Browser tab icon (32x32px recommended)</p>
+                  <Label htmlFor="favicon">Favicon Upload</Label>
+                  <div className="flex items-center gap-3">
+                    <Input
+                      id="favicon"
+                      type="file"
+                      accept="image/png,image/x-icon,image/jpeg,image/jpg"
+                      onChange={(e) => handleFileUpload('favicon', e.target.files[0])}
+                      disabled={uploading.favicon}
+                      className="cursor-pointer"
+                    />
+                    {uploading.favicon && (
+                      <div className="flex items-center gap-2 text-sm text-blue-600">
+                        <RefreshCw className="h-4 w-4 animate-spin" />
+                        Uploading...
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-500">Browser tab icon (32x32px recommended - PNG, ICO, JPG)</p>
+                  {formData.favicon && (
+                    <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg bg-white relative">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleChange('favicon', '')}
+                        className="absolute top-2 right-2 h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                      <p className="text-sm font-medium mb-3 text-gray-700">Favicon Preview:</p>
+                      <div className="flex items-center justify-center bg-gray-50 p-4 rounded">
+                        <img src={formData.favicon} alt="Favicon preview" className="h-8 w-8 object-contain" />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-2">

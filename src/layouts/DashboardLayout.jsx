@@ -29,12 +29,29 @@ const DashboardLayout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
-  const { settings } = useSettings();
+  const { settings, loading } = useSettings();
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
+
+  // Show loading state while settings load
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="relative">
+            <div className="h-16 w-16 mx-auto mb-4">
+              <div className="absolute inset-0 rounded-full border-4 border-gray-200"></div>
+              <div className="absolute inset-0 rounded-full border-4 border-t-blue-600 border-r-purple-600 animate-spin"></div>
+            </div>
+          </div>
+          <h2 className="text-lg font-semibold text-gray-700">Loading Dashboard...</h2>
+        </div>
+      </div>
+    );
+  }
 
   const menuItems = [
     {

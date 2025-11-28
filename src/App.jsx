@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { useSettings } from '@/context/SettingsContext';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import DashboardLayout from './layouts/DashboardLayout';
 import HomePage from './pages/HomePage';
@@ -25,6 +28,93 @@ import EditBookingVenuePage from './pages/EditBookingVenuePage';
 function App() {
   const location = useLocation();
   const isDashboard = location.pathname.startsWith('/dashboard');
+  const { settings, loading } = useSettings();
+
+  // Get initials from business name
+  const getInitials = (name) => {
+    if (!name) return 'EP';
+    const words = name.trim().split(' ');
+    if (words.length === 1) {
+      return words[0].charAt(0).toUpperCase();
+    }
+    return words.map(word => word.charAt(0).toUpperCase()).slice(0, 2).join('');
+  };
+
+  // Generate favicon from initials
+  const generateFaviconFromInitials = (initials, primaryColor = '#7c3aed') => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 32;
+    canvas.height = 32;
+    const ctx = canvas.getContext('2d');
+    
+    // Create gradient background
+    const gradient = ctx.createLinearGradient(0, 0, 32, 32);
+    gradient.addColorStop(0, primaryColor);
+    gradient.addColorStop(1, '#3b82f6');
+    
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 32, 32);
+    
+    // Add text
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 16px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(initials, 16, 16);
+    
+    return canvas.toDataURL('image/png');
+  };
+
+  // Update favicon dynamically when settings change
+  useEffect(() => {
+    // Remove existing favicon links
+    const existingLinks = document.querySelectorAll("link[rel*='icon']");
+    existingLinks.forEach(link => link.remove());
+
+    let faviconUrl;
+    
+    if (settings.favicon) {
+      faviconUrl = settings.favicon;
+    } else {
+      // Generate favicon from initials
+      const initials = getInitials(settings.businessName);
+      faviconUrl = generateFaviconFromInitials(initials);
+    }
+
+    // Create and add new favicon link
+    const link = document.createElement('link');
+    link.rel = 'icon';
+    link.type = 'image/png';
+    link.href = faviconUrl;
+    document.head.appendChild(link);
+  }, [settings.favicon, settings.businessName]);
+
+  // Update page title dynamically
+  useEffect(() => {
+    if (settings.metaTitle) {
+      document.title = settings.metaTitle;
+    } else if (settings.businessName) {
+      document.title = `${settings.businessName} - Event Management & Booking`;
+    }
+  }, [settings.metaTitle, settings.businessName]);
+
+  // Show loading screen while settings are loading
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+        <div className="text-center">
+          <div className="relative">
+            <div className="h-20 w-20 mx-auto mb-4">
+              <div className="absolute inset-0 rounded-full border-4 border-gray-200"></div>
+              <div className="absolute inset-0 rounded-full border-4 border-t-blue-600 border-r-purple-600 animate-spin"></div>
+            </div>
+          </div>
+          <h2 className="text-xl font-semibold text-gray-700 mb-2">Loading...</h2>
+          <p className="text-gray-500 text-sm">Preparing your experience</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -64,6 +154,10 @@ function App() {
         />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      
+      {/* Show Footer only on non-dashboard pages */}
+      {!isDashboard && <Footer />}
+      
       <Toaster
         position="top-right"
         toastOptions={{

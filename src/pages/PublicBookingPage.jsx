@@ -65,15 +65,6 @@ const PublicBookingPage = () => {
       const response = await axios.get(
         `${API_URL}/bookings/public/${venueId}/availability?date=${selectedDate.toISOString()}`
       );
-      console.log('📅 Fetched bookings for date:', selectedDate.toLocaleDateString());
-      console.log('Total bookings:', response.data.bookings.length);
-      response.data.bookings.forEach((booking, index) => {
-        console.log(`Booking ${index + 1}:`, {
-          table: booking.tableNumber,
-          time: `${booking.timeSlot?.startTime} - ${booking.timeSlot?.endTime}`,
-          status: booking.status
-        });
-      });
       setBookedSlots(response.data.bookings);
     } catch (error) {
       toast.error('Failed to load availability');

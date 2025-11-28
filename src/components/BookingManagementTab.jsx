@@ -283,41 +283,44 @@ const BookingManagementTab = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-gray-50">
-                  <TableHead className="font-bold">Guest</TableHead>
-                  <TableHead className="font-bold">Venue</TableHead>
-                  <TableHead className="font-bold">Table</TableHead>
-                  <TableHead className="font-bold">Date & Time</TableHead>
-                  <TableHead className="font-bold">Status</TableHead>
-                  <TableHead className="font-bold text-right">Actions</TableHead>
-                </TableRow>
+            <div className="overflow-x-auto -mx-6 sm:mx-0">
+              <div className="inline-block min-w-full align-middle">
+                <div className="overflow-hidden">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-gray-50">
+                        <TableHead className="font-bold text-xs sm:text-sm whitespace-nowrap">Guest</TableHead>
+                        <TableHead className="font-bold text-xs sm:text-sm whitespace-nowrap">Venue</TableHead>
+                        <TableHead className="font-bold text-xs sm:text-sm whitespace-nowrap hidden sm:table-cell">Table</TableHead>
+                        <TableHead className="font-bold text-xs sm:text-sm whitespace-nowrap">Date & Time</TableHead>
+                        <TableHead className="font-bold text-xs sm:text-sm whitespace-nowrap hidden md:table-cell">Status</TableHead>
+                        <TableHead className="font-bold text-xs sm:text-sm text-right whitespace-nowrap">Actions</TableHead>
+                      </TableRow>
               </TableHeader>
               <TableBody>
                 {bookings.slice(0, 10).map((booking) => (
                   <TableRow key={booking._id} className="hover:bg-blue-50/50">
-                    <TableCell>
+                    <TableCell className="text-xs sm:text-sm">
                       <div>
                         <p className="font-semibold">{booking.guestName}</p>
-                        <p className="text-xs text-gray-500">{booking.guestEmail}</p>
+                        <p className="text-xs text-gray-500 truncate max-w-[150px]">{booking.guestEmail}</p>
                       </div>
                     </TableCell>
-                    <TableCell className="font-medium">{booking.venue?.name}</TableCell>
-                    <TableCell>
-                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
+                    <TableCell className="font-medium text-xs sm:text-sm">{booking.venue?.name}</TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium whitespace-nowrap">
                         Table {booking.tableNumber}
                       </span>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-xs sm:text-sm">
                       <div>
-                        <p className="font-medium">{formatDate(booking.date)}</p>
-                        <p className="text-xs text-gray-500">{booking.timeSlot?.startTime} - {booking.timeSlot?.endTime}</p>
+                        <p className="font-medium whitespace-nowrap">{formatDate(booking.date)}</p>
+                        <p className="text-xs text-gray-500 whitespace-nowrap">{booking.timeSlot?.startTime} - {booking.timeSlot?.endTime}</p>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">
                       <span
-                        className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-bold ${
+                        className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-bold whitespace-nowrap ${
                           booking.status === 'confirmed'
                             ? 'bg-green-100 text-green-800'
                             : booking.status === 'pending'
@@ -332,24 +335,24 @@ const BookingManagementTab = () => {
                       </span>
                     </TableCell>
                     <TableCell>
-                      <div className="flex gap-1 justify-end">
+                      <div className="flex gap-1 sm:gap-2 justify-end">
                         {booking.status === 'pending' && (
                           <>
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={() => handleConfirmBooking(booking._id)}
-                              className="border-green-300 text-green-600 hover:bg-green-50"
+                              className="border-green-300 text-green-600 hover:bg-green-50 p-2"
                             >
-                              <CheckCircle2 className="h-4 w-4" />
+                              <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4" />
                             </Button>
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={() => handleCancelBooking(booking._id)}
-                              className="border-red-300 text-red-600 hover:bg-red-50"
+                              className="border-red-300 text-red-600 hover:bg-red-50 p-2"
                             >
-                              <XCircle className="h-4 w-4" />
+                              <XCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                             </Button>
                           </>
                         )}
@@ -357,8 +360,11 @@ const BookingManagementTab = () => {
                     </TableCell>
                   </TableRow>
                 ))}
-              </TableBody>
-            </Table>
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+            </div>
           </CardContent>
         </Card>
       )}

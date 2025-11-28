@@ -64,12 +64,8 @@ const DashboardOverviewPage = () => {
       const expiredPolls = polls.filter(p => new Date(p.expireAt) <= now);
       const totalResponses = polls.reduce((sum, p) => {
         const responses = p.responses?.length || 0;
-        console.log('Poll:', p.title, 'Responses:', responses);
         return sum + responses;
       }, 0);
-
-      console.log('Total polls:', polls.length);
-      console.log('Total responses:', totalResponses);
 
       setPollStats({
         total: polls.length,
@@ -99,7 +95,7 @@ const DashboardOverviewPage = () => {
             );
             allBookings = [...allBookings, ...(bookingsResponse.data.bookings || [])];
           } catch (err) {
-            console.error(`Failed to fetch bookings for venue ${venue._id}:`, err);
+            // Failed to fetch bookings for this venue
           }
         }
 
@@ -113,14 +109,8 @@ const DashboardOverviewPage = () => {
         
         const todayBookings = allBookings.filter(b => {
           const bookingDate = new Date(b.date);
-          const isToday = bookingDate >= todayStart && bookingDate <= todayEnd;
-          console.log('Booking:', b.guestName, 'Date:', bookingDate, 'IsToday:', isToday);
-          return isToday;
+          return bookingDate >= todayStart && bookingDate <= todayEnd;
         });
-
-        console.log('All bookings:', allBookings.length);
-        console.log('Today bookings:', todayBookings.length);
-        console.log('Today range:', todayStart, 'to', todayEnd);
 
         setBookingStats({
           totalVenues: venues.length,
@@ -131,10 +121,10 @@ const DashboardOverviewPage = () => {
 
         setRecentBookings(allBookings.slice(0, 4).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
       } catch (error) {
-        console.error('Failed to fetch booking data:', error);
+        // Failed to fetch booking data
       }
     } catch (error) {
-      console.error('Failed to fetch dashboard data:', error);
+      toast.error('Failed to load dashboard data');
     } finally {
       setLoading(false);
     }
@@ -164,14 +154,24 @@ const DashboardOverviewPage = () => {
               {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
             </p>
           </div>
-          <Button
-            onClick={() => navigate('/dashboard/bookings/create-venue')}
-            size="sm"
-            className="bg-white text-purple-600 hover:bg-white/90 font-medium shadow-md"
-          >
-            <Plus className="h-4 w-4 mr-1" />
-            New Venue
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              onClick={() => navigate('/dashboard/create')}
+              size="sm"
+              className="bg-white text-blue-600 hover:bg-white/90 font-medium shadow-md"
+            >
+              <Plus className="h-4 w-4 mr-1" />
+              New Event
+            </Button>
+            <Button
+              onClick={() => navigate('/dashboard/bookings/create-venue')}
+              size="sm"
+              className="bg-white text-purple-600 hover:bg-white/90 font-medium shadow-md"
+            >
+              <Plus className="h-4 w-4 mr-1" />
+              New Venue
+            </Button>
+          </div>
         </div>
       </div>
 
